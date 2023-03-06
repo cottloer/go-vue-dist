@@ -54,34 +54,14 @@ func staticDirHandler(mux *http.ServeMux, prefix string, staticDir string, flags
 	})
 }
 
-func uploadHandler(w http.ResponseWriter, r *http.Request) {
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("tem:", templates)
 	if r.Method == "GET" {
 		fmt.Println("get / index")
 		renderHtml(w, "index.html", nil)
-		// locals := make(map[string]interface{})
 
-		// err := templates["upload.html"].ExecuteTemplate(w, "upload", nil)
-		// err := templates["upload.html"].Execute(w, nil)
-		// check(err)
 	}
-	// if r.Method == "POST" {
-	// 	uploadfile, handle, err := r.FormFile("image")
-	// 	check(err)
-	// 	filename := handle.Filename
-	// 	fmt.Println("2 filename: ", filename)
-	// 	defer uploadfile.Close()
 
-	// 	t, err := os.Create(UPLOAD_DIR + "/" + filename)
-	// 	fmt.Println("3 t: ", t)
-	// 	check(err)
-	// 	defer t.Close()
-	// 	_, err = io.Copy(t, uploadfile)
-
-	// 	check(err)
-	// 	http.Redirect(w, r, "/view?id="+filename,
-	// 		http.StatusFound)
-	// }
 }
 func check(err error) {
 	if err != nil {
@@ -101,9 +81,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	staticDirHandler(mux, "/", "./dist", 0)
-	mux.HandleFunc("/index", uploadHandler)
-	// http.HandleFunc("/view", viewHandler)
-	// http.Handle("/", http.FileServer(http.Dir("./uploads")))
+	mux.HandleFunc("/index", IndexHandler)
 	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err.Error())
